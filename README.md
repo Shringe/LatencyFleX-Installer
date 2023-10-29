@@ -5,6 +5,7 @@ DISCLAIMER: I am not associated with LatencyFlex in any way.
 
 Note: LatencyFlex must be installed on your system first; this installer only installs LatencyFlex on your Proton installations, and games for you.
 
+Note: Tested on Arch Linux with manual LatencyFlex install on system, should work if installed through LatencyFlex AUR package. Not tested on other distributions.
 ## Installation
 ```git clone https://github.com/Shringe/LatencyFleX-Installer.git```
 
