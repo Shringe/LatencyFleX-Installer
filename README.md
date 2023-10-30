@@ -17,3 +17,5 @@ Example: for installing to Apex Legends and Proton experimental, the usage would
 ```
 Once you install LatencyFlex to a Proton installation, all games with LatencyFlex installed using that version of Proton should now work.
 Don't forget to add the necessary launch options, or configure the dxvk.conf beforehand.
+
+Custom proton versions may also be found under ```/home/<user>/.local/share/Steam/compatibilitytools.d/```
