@@ -19,3 +19,14 @@ Once you install LatencyFlex to a Proton installation, all games with LatencyFle
 Don't forget to add the necessary launch options, or configure the dxvk.conf beforehand.
 
 Custom proton versions may also be found under ```/home/<user>/.local/share/Steam/compatibilitytools.d/```
+
+## Configuration
+The dxvk.conf file is already configured for nvidia GPUs, if you do not have an nvidia GPU, add this line at the end:
+```dxgi.customVendorId = 10de```
+
+## Launch options
+Nvidia GPUs:
+```PROTON_NVAPI=1 LFX=1 %COMMAND%```
+
+Non-Nvidia GPUs:
+```PROTON_ENABLE_NVAPI=1 DXVK_NVAPI_DRIVER_VERSION=49729 DXVK_NVAPI_ALLOW_OTHER_DRIVERS=1 LFX=1 %COMMAND%```
