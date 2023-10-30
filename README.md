@@ -1,5 +1,5 @@
 # LatencyFleX-Installer
-Installer for LatencyFlex, https://github.com/ishitatsuyuki/LatencyFleX
+Installer for LatencyFlex: https://github.com/ishitatsuyuki/LatencyFleX
 
 DISCLAIMER: I am not associated with LatencyFlex in any way.
 
