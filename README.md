@@ -21,8 +21,7 @@ Don't forget to add the necessary launch options, or configure the dxvk.conf bef
 Custom proton versions may also be found under ```/home/<user>/.local/share/Steam/compatibilitytools.d/```
 
 ## Configuration
-The dxvk.conf file is already configured for nvidia GPUs, if you do not have an nvidia GPU, add this line at the end:
-```dxgi.customVendorId = 10de```
+The dxvk.conf file is already configured for nvidia GPUs, if you do not have an nvidia GPU, uncomment the second line.
 
 ## Launch options
 Nvidia GPUs:
