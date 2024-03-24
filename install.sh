@@ -6,7 +6,9 @@ latencyflex_wine_dll="/usr/lib/wine/x86_64-windows/latencyflex_wine.dll"
 latencyflex_layer_dll="/usr/lib/wine/x86_64-windows/latencyflex_layer.dll"
 latencyflex_layer_so="/usr/lib/wine/x86_64-unix/latencyflex_layer.so"
 
-steamDirectory="$HOME/.local/share/Steam"
+# This will be prompted for at runtime
+DEFAULT_STEAM_DIRECTORY="$HOME/.local/share/Steam"
+promptSteamDir=true
 
 
 # Prompts [y/N] countinue prompt
@@ -17,13 +19,24 @@ function promptCountinue {
     then
         echo "Installing..."
     else
+        echo "Aborted by user."
         exit
     fi
 }
 
-# symlinks dlls to specified location
+# Returns $1 if $2 is empty
+function defaultTo {
+    if [ -n "$2" ]; then
+        echo $2 
+    else
+        echo $1
+    fi
+}
+
+
+# Symlinks DLLs to specified location
 function linkDLLs {
-    # For unknown reason these smylinks here is broken, seen in issue https://github.com/ishitatsuyuki/LatencyFleX/issues/5
+    # For unknown reason the symlinks here are broken, seen in issue https://github.com/ishitatsuyuki/LatencyFleX/issues/5
     # ln -s "$latencyflex_wine_dll" "$1"
     # ln -s "$latencyflex_layer_dll" "$1"
 
@@ -39,17 +52,29 @@ function copyDXVKConf {
 
 # Installs to game with game directory name(not full path), and game ID
 function installToGame {
-    promptCountinue "Install dxvk.conf into '$1', and libraries into '$2'?"
+    # Getting steam directory
+    if [ "$promptSteamDir" = true ]; then
+        echo "Enter Steam directory, leave blank for \"$DEFAULT_STEAM_DIRECTORY\":"
+        read steamDir
+    else
+        steamDir=""
+    fi
 
-    linkDLLs "$steamDirectory/steamapps/compatdata/$2/pfx/drive_c/windows/system32"
-    copyDXVKConf "$steamDirectory/steamapps/common/$1"
+    local steamDir=$(defaultTo $DEFAULT_STEAM_DIRECTORY $steamDir)
+    echo $steamDir
+
+    # Installing
+    promptCountinue "Install dxvk.conf into \"$1\", and libraries into \"$2\"?"
+
+    linkDLLs "$steamDir/steamapps/compatdata/$2/pfx/drive_c/windows/system32"
+    copyDXVKConf "$steamDir/steamapps/common/$1"
 
     echo "Installation finished, remember to have LatencyFlex installed on the system/proton, aswell as the proper launch options for LatencyFlex to work ingame."
 }
 
 # Installs to proton version with full path
 function installToProton {
-    promptCountinue "Install libraries into '$1'?"
+    promptCountinue "Install libraries into \"$1\"?"
 
     linkDLLs "$1/files/lib64/wine/x86_64-windows"
     
@@ -61,14 +86,15 @@ function installToProton {
 }
 
 
-# handling parameters
-if [[ "$1" == "--game" ]]; then
-    echo "Make sure you have LatencyFlex installed on the system before installing to games, as this installer copies files from the system install."
+# Handling parameters
+echo -e "Make sure you have LatencyFlex installed on the system before using, as this installer copies files from the system install.\n"
+if [[ "$1" == "--game" ]]; then 
     installToGame "$2" "$3"
 elif [[ "$1" == "--proton" ]]; then
     installToProton "$2"
 else
     echo "Install script to install LatencyFlex to games and proton versions easily.
   --game    Installs LatencyFlex to a specified game directory name + game ID, e.x. './install.sh \"Apex Legends\" 1172470'
-  --proton  Installs LatencyFlex to a specified proton full path, e.x. './install.sh \"$steamDirectory/compatibilitytools.d/GE-Proton8-21/\"'"
+  --proton  Installs LatencyFlex to a specified proton full path, e.x. './install.sh \"$DEFAULT_STEAM_DIRECTORY/compatibilitytools.d/GE-Proton8-21/\"'"
 fi
+
